@@ -2,87 +2,74 @@ import os
 import markdown
 import shutil
 
-# --- 1. 核心路径配置 (适配 Cloudflare) ---
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-# 必须叫 dist，因为这是你在 Cloudflare 设置的 Build output directory
-OUTPUT_DIR = os.path.join(PROJECT_DIR, 'dist') 
-TEMPLATES_DIR = os.path.join(PROJECT_DIR, 'templates')
-ARTICLES_DIR = os.path.join(PROJECT_DIR, 'articles')
-STATIC_DIR = os.path.join(PROJECT_DIR, 'static')
+# --- 强制路径配置 ---
+# 直接使用当前工作目录，确保 Cloudflare 能在根部看到 dist
+BASE_DIR = os.getcwd()
+OUTPUT_DIR = os.path.join(BASE_DIR, 'dist') 
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+ARTICLES_DIR = os.path.join(BASE_DIR, 'articles')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
-# 假设的站点配置（也可以写在 config.py，但这里直接内置更稳）
 SITE_TITLE = "ResonQ"
-SITE_DESCRIPTION = "Deciphering the Quantum Resonance - A Journey into Information & Physics"
+SITE_DESCRIPTION = "Deciphering the Quantum Resonance"
 BASE_URL = "https://resonq.com"
 
 def build():
-    print("Starting build process...")
-
-    # 2. 清理并重新创建输出目录
+    print(f"Current Working Directory: {BASE_DIR}")
+    
+    # 确保输出目录干净且存在
     if os.path.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
-    os.makedirs(OUTPUT_DIR)
+    os.makedirs(OUTPUT_DIR, exist_ok=True)
     os.makedirs(os.path.join(OUTPUT_DIR, 'articles'), exist_ok=True)
+    print(f"Created directory: {OUTPUT_DIR}")
 
-    # 3. 核心：搬运静态文件（图片就靠这一步）
+    # 复制静态资源（图片等）
     if os.path.exists(STATIC_DIR):
-        # 将 static 文件夹内的所有子目录（如 images）复制到 dist 根目录
         shutil.copytree(STATIC_DIR, OUTPUT_DIR, dirs_exist_ok=True)
-        print(f"Success: Copied static files to {OUTPUT_DIR}")
+        print("Static files copied.")
 
-    # 4. 读取 HTML 模板
-    try:
-        index_tpl = open(os.path.join(TEMPLATES_DIR, 'index.html'), encoding='utf-8').read()
-        article_tpl = open(os.path.join(TEMPLATES_DIR, 'article.html'), encoding='utf-8').read()
-    except Exception as e:
-        print(f"Error: Templates not found. {e}")
-        return
+    # 加载模板
+    index_tpl = open(os.path.join(TEMPLATES_DIR, 'index.html'), encoding='utf-8').read()
+    article_tpl = open(os.path.join(TEMPLATES_DIR, 'article.html'), encoding='utf-8').read()
 
-    # 5. 处理所有 Markdown 文章
     article_list = []
     if os.path.exists(ARTICLES_DIR):
         for filename in sorted(os.listdir(ARTICLES_DIR), reverse=True):
             if filename.endswith('.md'):
-                path = os.path.join(ARTICLES_DIR, filename)
-                with open(path, 'r', encoding='utf-8') as f:
-                    raw_content = f.read()
+                with open(os.path.join(ARTICLES_DIR, filename), 'r', encoding='utf-8') as f:
+                    content = f.read()
                 
-                # 分离标题和内容
-                lines = raw_content.split('\n')
+                lines = content.split('\n')
                 title = lines[0].lstrip('#').strip()
                 body = '\n'.join(lines[1:])
                 
-                # 转换 Markdown (开启 extra 扩展以支持更多格式)
-                html_body = markdown.markdown(body, extensions=['extra', 'codehilite'])
-
-                # 渲染单篇文章页
+                html_body = markdown.markdown(body, extensions=['extra'])
                 slug = filename.replace('.md', '')
-                rendered_article = article_tpl.replace('{{ARTICLE_TITLE}}', title)
-                rendered_article = rendered_article.replace('{{CONTENT}}', html_body)
-                rendered_article = rendered_article.replace('{{SITE_TITLE}}', SITE_TITLE)
-                rendered_article = rendered_article.replace('{{BASE_URL}}', BASE_URL)
 
-                # 写入文章文件
-                output_path = os.path.join(OUTPUT_DIR, 'articles', f'{slug}.html')
-                with open(output_path, 'w', encoding='utf-8') as f:
-                    f.write(rendered_article)
+                # 渲染并写入文章页
+                full_html = article_tpl.replace('{{ARTICLE_TITLE}}', title)
+                full_html = full_html.replace('{{CONTENT}}', html_body)
+                full_html = full_html.replace('{{SITE_TITLE}}', SITE_TITLE)
+                full_html = full_html.replace('{{BASE_URL}}', BASE_URL)
+
+                with open(os.path.join(OUTPUT_DIR, 'articles', f'{slug}.html'), 'w', encoding='utf-8') as f:
+                    f.write(full_html)
                 
-                article_list.append({'title': title, 'url': f'/articles/{slug}.html'})
-                print(f"Rendered: {title}")
+                article_list.append(f'<li><a href="/articles/{slug}.html">{title}</a></li>')
+                print(f"Article rendered: {slug}")
 
-    # 6. 渲染首页索引
-    links_html = ""
-    for item in article_list:
-        links_html += f'<li><a href="{item["url"]}">{item["title"]}</a></li>'
-    
-    rendered_index = index_tpl.replace('{{ARTICLE_LIST}}', links_html)
-    rendered_index = rendered_index.replace('{{SITE_TITLE}}', SITE_TITLE)
-    rendered_index = rendered_index.replace('{{SITE_DESCRIPTION}}', SITE_DESCRIPTION)
+    # 渲染并写入首页
+    index_html = index_tpl.replace('{{ARTICLE_LIST}}', '\n'.join(article_list))
+    index_html = index_html.replace('{{SITE_TITLE}}', SITE_TITLE)
+    index_html = index_html.replace('{{SITE_DESCRIPTION}}', SITE_DESCRIPTION)
 
     with open(os.path.join(OUTPUT_DIR, 'index.html'), 'w', encoding='utf-8') as f:
-        f.write(rendered_index)
+        f.write(index_html)
 
-    print(f"Build Complete! All files are in: {OUTPUT_DIR}")
+    print("!!! BUILD PROCESS FINISHED SUCCESSFULLY !!!")
+    # 列出 dist 目录内容，方便在日志里查看到底生成没
+    print(f"Files in dist: {os.listdir(OUTPUT_DIR)}")
 
 if __name__ == "__main__":
     build()
