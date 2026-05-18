@@ -3,54 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ARTICLE_TITLE}} | {{SITE_TITLE}}</title>
-    <meta name="description" content="A featured quantum insight on ResonQ, by {{AUTHOR}}.">
-    <meta property="og:title" content="{{ARTICLE_TITLE}} | ResonQ">
-    <meta property="og:description" content="{{SITE_DESCRIPTION}}">
-    <meta property="og:url" content="{{BASE_URL}}/articles/{{ARTICLE_SLUG}}.html">
+    <title>{{TITLE}} | ResonQ</title>
+    <meta property="og:title" content="{{TITLE}}">
+    <meta property="og:description" content="Insights from ResonQ: Deciphering the Quantum Resonance.">
+    <meta property="og:image" content="/og-image.png">
+    <meta property="og:url" content="{{URL}}">
     <meta property="og:type" content="article">
     <style>
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.8; color: #333; max-width: 800px; margin: 40px auto; padding: 0 20px; background-color: #fafafa; }
-        header { text-align: center; margin-bottom: 50px; }
-        h1.article-title { font-size: 2.8em; margin-bottom: 5px; color: #111; line-height: 1.2; }
-        p.author-meta { font-size: 0.9em; color: #888; font-style: italic; }
-        
-        main article { background: #fff; padding: 40px; border: 1px solid #eee; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-        
-        /* 针对图片的样式 */
-        main article img { max-width: 100%; height: auto; display: block; margin: 30px auto; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        
-        main article h2 { font-size: 1.8em; margin-top: 40px; margin-bottom: 15px; color: #222; }
-        main article h3 { font-size: 1.4em; margin-top: 30px; margin-bottom: 10px; color: #444; }
-        main article p { margin-bottom: 20px; font-size: 1.1em; color: #444; }
-
-        /* Vlatko 的原文引用样式 */
-        main article blockquote { border-left: 3px solid #333; padding: 15px 25px; color: #666; font-style: italic; margin: 30px 0; background-color: #f7f7f7; }
-
-        /* 你的 ResonQ 点评样式 */
-        main article h2.reflection-title { text-align: center; color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-top: 60px; }
-        main article div.my-reflection { background-color: #f0f8ff; padding: 30px; border-radius: 4px; border: 1px solid #b8daff; margin-top: 30px; position: relative; }
-        
-        main article div.my-reflection::before { content: "RESONQ INSIGHT"; position: absolute; top: -10px; left: 20px; background-color: #007bff; color: #fff; padding: 2px 10px; font-weight: bold; font-size: 0.8em; border-radius: 2px; }
-
-        footer { text-align: center; margin-top: 60px; padding-top: 20px; border-top: 1px solid #eee; color: #999; font-size: 0.9em; }
-        a.back-link { text-decoration: none; color: #007bff; font-weight: bold; font-size: 1em; display: inline-block; margin-top: 40px; }
-        a.back-link:hover { color: #0056b3; }
+        body { font-family: "Georgia", serif; line-height: 1.8; color: #222; max-width: 700px; margin: 40px auto; padding: 0 20px; background-color: #fff; }
+        header { margin-bottom: 40px; }
+        .back-link { font-family: sans-serif; text-decoration: none; color: #007bff; font-size: 0.9em; }
+        h1 { font-size: 2.5em; line-height: 1.2; margin-top: 10px; }
+        img { max-width: 100%; height: auto; border-radius: 4px; display: block; margin: 20px auto; }
+        footer { margin-top: 60px; padding-top: 20px; border-top: 1px solid #eee; font-family: sans-serif; font-size: 0.8em; color: #666; }
     </style>
 </head>
 <body>
     <header>
-        <h1 class="article-title">{{ARTICLE_TITLE}}</h1>
-        <p class="author-meta">Featured Insight | Commented by Frank Cheung</p>
+        <a href="/" class="back-link">← Back to ResonQ</a>
+        <h1>{{TITLE}}</h1>
     </header>
-    <main>
-        <article>
-            {{CONTENT}}
-            <a href="/" class="back-link">&larr; Back to ResonQ Home</a>
-        </article>
-    </main>
+    <article>
+        {{CONTENT}}
+    </article>
     <footer>
-        <p>&copy; 2026 ResonQ. Dedicated to Deciphering the Quantum Resonance.</p>
+        Published on ResonQ - Deciphering the Quantum Resonance.
     </footer>
 </body>
 </html>
