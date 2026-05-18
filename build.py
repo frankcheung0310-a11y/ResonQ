@@ -1,14 +1,13 @@
 import os
 import markdown
 import re
-import shutil
 
 # --- Configuration ---
-POSTS_DIR = 'articles'      # 对应你截图中的 articles 文件夹
-DIST_DIR = 'dist'          # Cloudflare 识别的输出目录
-TEMPLATES_DIR = 'templates' # 对应你截图中的 templates 文件夹
+POSTS_DIR = 'articles'      # Where you put your .md files
+DIST_DIR = 'dist'          # Where Cloudflare serves from
+TEMPLATES_DIR = 'templates' # Where your HTML templates are
 
-# 强制确保输出目录结构正确 (Gritray 逻辑)
+# Ensure output directories exist
 if not os.path.exists(DIST_DIR):
     os.makedirs(os.path.join(DIST_DIR, 'articles'), exist_ok=True)
 elif not os.path.exists(os.path.join(DIST_DIR, 'articles')):
@@ -26,9 +25,10 @@ except FileNotFoundError as e:
 
 posts_metadata = []
 
-# --- Process Markdown Articles (Gritray 逻辑) ---
+# --- Process Markdown Articles ---
 if not os.path.exists(POSTS_DIR):
     os.makedirs(POSTS_DIR)
+    print(f"Created {POSTS_DIR} directory. Please add .md files there.")
 
 for filename in os.listdir(POSTS_DIR):
     if filename.endswith('.md'):
@@ -36,56 +36,61 @@ for filename in os.listdir(POSTS_DIR):
         with open(file_path, 'r', encoding='utf-8') as f:
             raw_text = f.read()
             
-            # 提取标题
+            # 1. Extract the first H1 title (e.g., # My Title)
             title_match = re.search(r'^#\s+(.*)', raw_text, re.MULTILINE)
             if title_match:
                 title = title_match.group(1).strip()
+                # 2. Remove the first H1 line to avoid double titles in article.html
+                # This regex removes the first occurrence of # Title
                 body_md = re.sub(r'^#\s+.*', '', raw_text, count=1, flags=re.MULTILINE)
             else:
                 title = "Untitled Post"
                 body_md = raw_text
             
-            # 转换为 HTML (包含 Gritray 使用的插件)
+            # 3. Convert Markdown to HTML with advanced extensions
+            # 'extra' includes tables, footnotes, etc.
             content_html = markdown.markdown(body_md, extensions=['extra', 'nl2br', 'sane_lists'])
+            
+            # Generate the output filename (slug)
             slug = filename.replace('.md', '.html')
             
-            # 填充模板 (注意：根据你模板里的变量名，Gritray 用的是 {{TITLE}} 和 {{CONTENT}})
+            # 4. Fill article template
             full_article = article_tpl.replace('{{TITLE}}', title).replace('{{CONTENT}}', content_html)
             
+            # Save the individual article page
             output_path = os.path.join(DIST_DIR, 'articles', slug)
             with open(output_path, 'w', encoding='utf-8') as out:
                 out.write(full_article)
             
+            # Store metadata for the index page link list
             posts_metadata.append({
                 'title': title,
-                'url': f'articles/{slug}'
+                'url': f'articles/{slug}',
+                'filename': filename # for sorting or debugging
             })
 
 # Build Post Feed for Index
 feed_html = ""
 for post in posts_metadata:
+    # 在 url 前加一个 / 确保它是根路径
     absolute_url = f"/{post['url']}"
     feed_html += f'''
     <a href="{absolute_url}" class="post-entry">
         <div class="post-title">{post['title']}</div>
     </a>'''
 
-# Final Index Assembly
+# 5. Final Index Assembly
 final_index = index_tpl.replace('{{POST_FEED}}', feed_html)
 with open(os.path.join(DIST_DIR, 'index.html'), 'w', encoding='utf-8') as f:
     f.write(final_index)
 
-# --- 关键修改：同步静态资源（含图片） ---
-# 1. 搬运单个文件 (Gritray 原有逻辑)
+print(f"Successfully built {len(posts_metadata)} articles into {DIST_DIR}/")
+
+import shutil
+
 static_assets = ['favicon.png', 'og-image.png']
+
 for asset in static_assets:
     if os.path.exists(asset):
         shutil.copy(asset, os.path.join(DIST_DIR, asset))
-
-# 2. 搬运整个 static 文件夹（ResonQ 的图片就在这里）
-if os.path.exists('static'):
-    # 这行会把 static/images 完整复制到 dist/static/images
-    shutil.copytree('static', os.path.join(DIST_DIR, 'static'), dirs_exist_ok=True)
-    print("Successfully synced: static folder (images)")
-
-print(f"Build Complete! {len(posts_metadata)} articles generated.")
+        print(f"Successfully synced: {asset}")
