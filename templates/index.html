@@ -1,63 +1,733 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ResonQ - Deciphering Quantum Tech</title>
-    <meta name="description" content="Advocating for the success of quantum physics and next-gen computing.">
-    <meta property="og:title" content="ResonQ | Quantum Tech Insights">
-    <meta property="og:description" content="Advocating for the future of quantum computing and error correction.">
-    <meta property="og:image" content="/og-image.png">
-    <meta property="og:type" content="website">
-    <link rel="icon" type="image/png" href="/favicon.png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResonQ — Quantum Resonance Intelligence</title>
+  <meta name="description" content="ResonQ tracks the frontier of Quantum Error Correction, hardware resonance, and the strategic milestones defining the quantum era.">
+  <meta property="og:title" content="ResonQ | Quantum Resonance Intelligence">
+  <meta property="og:description" content="Deciphering the leap from theoretical physics to industrial-scale quantum computing.">
+  <meta property="og:image" content="/og-image.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://resonq.com/">
+  <meta property="twitter:title" content="ResonQ | Quantum Resonance Intelligence">
+  <meta property="twitter:description" content="Quantum Error Correction, hardware resonance, and the quantum era.">
+  <meta property="twitter:image" content="https://resonq.com/og-image.png">
 
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://resonq.com/">
-    <meta property="twitter:title" content="ResonQ">
-    <meta property="twitter:description" content="Advocating for quantum tech innovation.">
-    <meta property="twitter:image" content="https://resonq.com/og-image.png">
-    
-    <style>
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 850px; margin: 40px auto; padding: 0 25px; background-color: #ffffff; }
-        header { text-align: left; margin-bottom: 60px; border-bottom: 3px solid #000; padding-bottom: 30px; }
-        h1 { font-size: 3.5em; margin: 0; letter-spacing: -2px; font-weight: 900; text-transform: uppercase; }
-        p.tagline { font-size: 1.2em; color: #555; margin-top: 5px; font-weight: 500; }
-        
-        section.mission { margin-bottom: 50px; font-size: 1.1em; color: #444; border-left: 4px solid #007bff; padding-left: 20px; }
-        
-        h2 { font-size: 1.8em; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 25px; }
-        
-        .posts-container { display: grid; gap: 15px; }
-        .post-entry { display: block; background: #fff; padding: 25px; border: 1px solid #e1e4e8; text-decoration: none; color: #000; transition: all 0.2s ease; border-radius: 0px; }
-        .post-entry:hover { border-color: #000; box-shadow: 6px 6px 0px #000; transform: translate(-2px, -2px); }
-        .post-title { font-size: 1.4em; font-weight: 800; color: #007bff; }
-        
-        footer { margin-top: 80px; padding: 40px 0; border-top: 1px solid #eee; text-align: center; color: #666; font-size: 0.9em; }
-        footer a { color: #000; font-weight: bold; text-decoration: none; }
-        footer a:hover { text-decoration: underline; }
-    </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,300;1,6..72,400&family=JetBrains+Mono:wght@200;300;400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --void:     #04080f;
+      --deep:     #070d18;
+      --panel:    #0c1425;
+      --card:     #101929;
+      --blue:     #2563eb;
+      --blue-b:   #3b82f6;
+      --cyan:     #06b6d4;
+      --white:    #f0f6ff;
+      --ink:      #c8d8f0;
+      --ink-mid:  #a0b8d8;
+      --border:   rgba(37,99,235,0.15);
+      --border-s: rgba(37,99,235,0.3);
+      --border-w: rgba(240,246,255,0.07);
+    }
+
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--void);
+      color: var(--white);
+      font-family: 'Newsreader', Georgia, serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── WAVE CANVAS ── */
+    #waveCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      height: 54px;
+      background: rgba(4,8,15,0.96);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(20px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+    }
+
+    .topbar-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: 0.08em;
+      color: var(--white);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    .topbar-logo span { color: var(--cyan); }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.52rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+    }
+
+    .live-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+      animation: livePulse 2s infinite;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 2rem 4rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero-pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 300;
+      letter-spacing: 0.55em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 2rem;
+      animation: fadeUp 0.8s ease both;
+    }
+
+    .hero-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3.5rem, 11vw, 8rem);
+      letter-spacing: -0.03em;
+      line-height: 0.9;
+      color: var(--white);
+      animation: fadeUp 0.8s 0.1s ease both;
+      text-transform: uppercase;
+    }
+
+    .hero-title .accent { color: var(--cyan); }
+
+    .hero-bottom {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+
+    .hero-desc {
+      font-family: 'Newsreader', serif;
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.9;
+    }
+
+    .hero-desc strong { color: var(--white); font-weight: 400; }
+    .hero-desc em { color: var(--cyan); font-style: italic; }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .stat-cell {
+      padding: 1rem 1.25rem;
+      background: var(--panel);
+      border: 1px solid var(--border-w);
+    }
+
+    .stat-val {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--cyan);
+      line-height: 1;
+      margin-bottom: 0.2rem;
+    }
+
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.48rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+    }
+
+    /* ── MISSION ── */
+    .mission-section {
+      position: relative;
+      z-index: 1;
+      background: var(--blue);
+      padding: 3.5rem 2rem;
+    }
+
+    .mission-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .mission-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 300;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: rgba(240,246,255,0.6);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      white-space: nowrap;
+    }
+
+    .mission-text {
+      font-family: 'Newsreader', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-weight: 300;
+      color: rgba(240,246,255,0.95);
+      line-height: 1.7;
+    }
+
+    .mission-text strong {
+      font-style: normal;
+      font-weight: 400;
+      color: #fff;
+    }
+
+    /* ── FOCUS AREAS ── */
+    .focus-section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2rem 3rem;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.52rem;
+      font-weight: 300;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 2.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .focus-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .focus-card {
+      padding: 2.5rem 2rem;
+      background: var(--panel);
+      border: 1px solid var(--border-w);
+      transition: border-color 0.3s, background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .focus-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .focus-card:hover { border-color: var(--border-s); background: var(--card); }
+    .focus-card:hover::before { opacity: 1; }
+
+    .fc-index {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      color: var(--blue);
+      opacity: 0.2;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .fc-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--white);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+    }
+
+    .fc-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1.25rem;
+      opacity: 0.8;
+    }
+
+    .fc-rule {
+      width: 24px; height: 1px;
+      background: var(--border-s);
+      margin-bottom: 1.25rem;
+    }
+
+    .fc-desc {
+      font-family: 'Newsreader', serif;
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.85;
+    }
+
+    /* ── ARTICLES ── */
+    .articles-section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+
+    .posts-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+
+    /* Default post-entry styling for {{POST_FEED}} */
+    .post-entry {
+      display: block;
+      padding: 2.5rem 2rem;
+      background: var(--panel);
+      border: 1px solid var(--border-w);
+      text-decoration: none;
+      color: var(--white);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .post-entry::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--cyan));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.35s;
+    }
+
+    .post-entry:hover { border-color: var(--border-s); background: var(--card); }
+    .post-entry:hover::after { transform: scaleX(1); }
+
+    .post-entry::before {
+      content: 'QEC Research';
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.48rem;
+      font-weight: 300;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.75rem;
+      opacity: 0.75;
+    }
+
+    .post-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--white);
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+    }
+
+    /* ── SIGNAL BAR ── */
+    .signal-bar {
+      position: relative;
+      z-index: 1;
+      background: var(--deep);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 2rem;
+    }
+
+    .signal-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .signal-left h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      color: var(--white);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .signal-left h2 span { color: var(--cyan); }
+
+    .signal-left p {
+      font-family: 'Newsreader', serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.85;
+      max-width: 500px;
+    }
+
+    .signal-contact {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.75rem;
+    }
+
+    .sc-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 300;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+    }
+
+    .sc-email {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--cyan);
+      text-decoration: none;
+      border: 1px solid var(--border-s);
+      padding: 0.75rem 1.5rem;
+      background: rgba(6,182,212,0.05);
+      transition: all 0.3s;
+    }
+
+    .sc-email:hover {
+      background: rgba(6,182,212,0.1);
+      border-color: var(--cyan);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-top: 1px solid var(--border-w);
+    }
+
+    .footer-l {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+    }
+
+    .footer-l span { color: var(--cyan); }
+
+    .footer-r {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 300;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ink-mid);
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(14px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes livePulse {
+      0%,100% { opacity:1; box-shadow:0 0 8px var(--cyan); }
+      50%      { opacity:0.3; box-shadow:none; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .topbar { padding: 0 1.25rem; }
+      .hero { padding: 0 1.25rem 3rem; min-height: 90vh; }
+      .hero-bottom { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-stats { grid-template-columns: 1fr 1fr; }
+      .mission-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+      .mission-label { writing-mode: horizontal-tb; transform: none; }
+      .focus-section { padding: 3.5rem 1.25rem 2rem; }
+      .focus-grid { grid-template-columns: 1fr; }
+      .articles-section { padding: 0 1.25rem 3.5rem; }
+      .posts-container { grid-template-columns: 1fr; }
+      .signal-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .signal-contact { align-items: flex-start; }
+      .signal-bar { padding: 3rem 1.25rem; }
+      footer { padding: 1.5rem 1.25rem; flex-direction: column; }
+    }
+
+    @media (max-width: 420px) {
+      .hero-title { letter-spacing: -0.02em; }
+      .hero-stats { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>ResonQ</h1>
-        <p class="tagline">Deciphering the Quantum Frontier</p>
-    </header>
-    
-    <section class="mission">
-        <p>ResonQ is dedicated to tracking the leap from theoretical physics to industrial-scale quantum computing. We focus on <strong>Quantum Error Correction (QEC)</strong>, hardware resonance, and the strategic milestones of the quantum era.</p>
-    </section>
 
-    <main>
-        <h2>Latest Quantum Insights</h2>
-        <div class="posts-container">
-            {{POST_FEED}}
+<canvas id="waveCanvas"></canvas>
+
+<!-- TOPBAR -->
+<nav class="topbar">
+  <a href="/" class="topbar-logo">Reson<span>Q</span></a>
+  <div class="topbar-right">
+    <div class="live-dot"></div>
+    Quantum Frontier Active
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-pre">// Quantum Resonance Intelligence — resonq.com</div>
+    <h1 class="hero-title">
+      Reson<span class="accent">Q</span><br>
+    </h1>
+    <div class="hero-bottom">
+      <div class="hero-desc">
+        Tracking the leap from theoretical physics to
+        <strong>industrial-scale quantum computing.</strong>
+        We focus on <em>Neural QEC</em>, hardware resonance,
+        and the strategic milestones defining the quantum era —
+        the signals that matter before anyone else sees them.
+      </div>
+      <div class="hero-stats">
+        <div class="stat-cell">
+          <div class="stat-val">120×</div>
+          <div class="stat-label">QEC Papers 2025</div>
         </div>
-    </main>
+        <div class="stat-cell">
+          <div class="stat-val">$3.5B</div>
+          <div class="stat-label">Quantum Funding 2025</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val">17×</div>
+          <div class="stat-label">AlphaQubit Error Reduction</div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-val">2026</div>
+          <div class="stat-label">Commercial QEC Horizon</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <footer>
-        <p>&copy; 2026 RESONQ. All Rights Reserved.</p>
-        <p>Contact: <a href="mailto:Frank@X-Qubit.com">Frank@X-Qubit.com</a></p>
-        <p>Advocating for the success of quantum physics and hard-tech innovation.</p>
-    </footer>
+  <!-- MISSION -->
+  <div class="mission-section">
+    <div class="mission-inner">
+      <div class="mission-label">Mission Statement</div>
+      <p class="mission-text">
+        ResonQ is dedicated to deciphering the quantum frontier —
+        tracking <strong>Quantum Error Correction</strong>,
+        hardware resonance frequencies, and the engineering breakthroughs
+        that will determine which companies reach utility-scale
+        faster and with lower capital burn.
+      </p>
+    </div>
+  </div>
+
+  <!-- FOCUS AREAS -->
+  <section class="focus-section">
+    <div class="section-label">// Research Focus Areas</div>
+    <div class="focus-grid">
+      <div class="focus-card">
+        <div class="fc-index">01</div>
+        <div class="fc-name">Neural QEC</div>
+        <div class="fc-tag">AI-Driven Error Correction</div>
+        <div class="fc-rule"></div>
+        <p class="fc-desc">Neural network architectures applied to real-time quantum error decoding. NVIDIA Ising, Google AlphaQubit, Harvard Cascade — the intelligence layer above hardware where the next competitive moat forms.</p>
+      </div>
+      <div class="focus-card">
+        <div class="fc-index">02</div>
+        <div class="fc-name">Universal QEC</div>
+        <div class="fc-tag">Cross-Platform Decoding</div>
+        <div class="fc-rule"></div>
+        <p class="fc-desc">Code-agnostic, hardware-agnostic error correction infrastructure. The standard every serious quantum deployment will need — spanning superconducting, trapped-ion, neutral-atom, and photonic architectures.</p>
+      </div>
+      <div class="focus-card">
+        <div class="fc-index">03</div>
+        <div class="fc-name">Quantum Resonance</div>
+        <div class="fc-tag">Hardware Control Layer</div>
+        <div class="fc-rule"></div>
+        <p class="fc-desc">Resonant frequency control, coherence time extension, and the microwave pulse engineering that determines whether quantum bits survive long enough to be useful. The physical foundation everything else depends on.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARTICLES -->
+  <section class="articles-section">
+    <div class="section-label">// Latest Quantum Insights</div>
+    <div class="posts-container">
+      {{POST_FEED}}
+    </div>
+  </section>
+
+  <!-- SIGNAL BAR -->
+  <div class="signal-bar">
+    <div class="signal-inner">
+      <div class="signal-left">
+        <h2>The Naming Layer<br><span>Nobody Claimed Yet.</span></h2>
+        <p>
+          Neural QEC. Universal QEC. Generative QEC.
+          The vocabulary of the quantum error correction era
+          is being defined right now — before the market names it.
+          ResonQ exists to track that moment as it happens.
+        </p>
+      </div>
+      <div class="signal-contact">
+        <div class="sc-label">Research Inquiries</div>
+        <a href="mailto:Frank@X-Qubit.com" class="sc-email">Frank@X-Qubit.com</a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-l">Reson<span>Q</span>.com</div>
+  <div class="footer-r">&copy; 2026 ResonQ · Quantum Resonance Intelligence · All Rights Reserved</div>
+</footer>
+
+<script>
+  const canvas = document.getElementById('waveCanvas');
+  const ctx    = canvas.getContext('2d');
+  let t = 0;
+
+  function resize() {
+    canvas.width  = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+
+  function draw() {
+    requestAnimationFrame(draw);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    t += 0.008;
+
+    const cx = canvas.width  / 2;
+    const cy = canvas.height / 2;
+
+    // Resonance interference pattern
+    const sources = [
+      { x: cx - 220, y: cy, phase: 0     },
+      { x: cx + 220, y: cy, phase: 1.1   },
+      { x: cx,       y: cy - 160, phase: 2.3 },
+    ];
+
+    const step = 22;
+    for (let x = 0; x < canvas.width; x += step) {
+      for (let y = 0; y < canvas.height; y += step) {
+        let amp = 0;
+        sources.forEach(s => {
+          const d = Math.sqrt((x-s.x)**2 + (y-s.y)**2);
+          amp += Math.sin(d * 0.035 - t * 1.8 + s.phase);
+        });
+        amp /= sources.length;
+
+        const bright = (amp + 1) / 2;
+        if (bright > 0.58) {
+          const alpha = (bright - 0.58) * 0.5;
+          const size  = 0.8 + bright * 1.2;
+          // Alternate between blue and cyan
+          const isCyan = (Math.floor(x/step) + Math.floor(y/step)) % 2 === 0;
+          ctx.beginPath();
+          ctx.arc(x, y, size, 0, Math.PI * 2);
+          ctx.fillStyle = isCyan
+            ? `rgba(6,182,212,${alpha})`
+            : `rgba(37,99,235,${alpha})`;
+          ctx.fill();
+        }
+      }
+    }
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  draw();
+</script>
+
 </body>
 </html>
